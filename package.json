@@ -1,0 +1,14 @@
+{
+  "name": "sbn-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for SBN website to build an index of pages",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "type": "module"
+}
