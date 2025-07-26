@@ -8,7 +8,7 @@ async function main() {
   const scraper = new SBNScraper(TITLE, BASE_URL, 10);
 
   console.log("Starting SBN website scraping...");
-  console.log("This may take several minutes due to the recursive nature.\n");
+  console.log("This may take several minutes.\n");
 
   try {
     const index = await scraper.buildIndex("", START_URL);
