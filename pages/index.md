@@ -1,1 +1,0 @@
-- [Norme comuni](./index_norme_comuni.md)
