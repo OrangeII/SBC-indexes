@@ -1,6 +1,6 @@
 # SBN indexes
 
-Node.js scaraper for the SBN (Servizio Bibliotecario Nazionale) website to build an index of pages and their hierarchical structure.
+Node.js scraper for the SBN (Servizio Bibliotecario Nazionale) website to build an index of pages and their hierarchical structure.
 
 ## Installation
 
