@@ -1,0 +1,25 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them and npm run the program.
+
+
+name: run
+
+on: workflow_dispatch
+
+jobs:
+  run:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm start
