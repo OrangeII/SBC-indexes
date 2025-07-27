@@ -1,2 +1,2 @@
-- [norme comuni](indexes\index_norme_comuni.md)
-- [materiale moderno](indexes\index_materiale_moderno.md)
+- [norme comuni](pages\index_norme_comuni)
+- [materiale moderno](pages\index_materiale_moderno)

@@ -1,5 +1,6 @@
 import { SBNScraper } from "./scraper.js";
 import fs from "fs";
+import path from "path";
 
 async function main() {
   const config = readConfig();
@@ -38,8 +39,10 @@ async function main() {
 }
 
 function writeIndexFile(files) {
+  //remove extension from links
+  //this is for github pages
   const indexContent = files
-    .map((file) => `- [${file.title}](${file.filename})`)
+    .map((file) => `- [${file.title}](${file.filename.replace(/\.md$/, "")})`)
     .join("\n");
   fs.writeFileSync("index.md", indexContent);
   console.log("Index file created: index.md");

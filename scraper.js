@@ -30,7 +30,9 @@ export class SBNScraper {
   // Private helper methods
   _generateIndexFilename() {
     const sanitizedTitle = this.indexTitle.replace(/\s+/g, "_");
-    return path.join(".", "indexes", `index_${sanitizedTitle}.md`);
+    let filePath = path.join(".", "pages", `index_${sanitizedTitle}.md`);
+    filePath = filePath.replace(/\/+/g, "/");
+    return filePath;
   }
 
   _ensureIndexDirectory() {
