@@ -1,13 +1,11 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them and npm run the program.
 
-
 name: run
 
 on: workflow_dispatch
 
 jobs:
   run:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -15,11 +13,36 @@ jobs:
         node-version: [22.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm start
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - run: npm start
+      - name: Check for file changes
+        id: git-check
+        run: |
+          git diff --quiet index.md pages/ || echo "changed=true" >> $GITHUB_OUTPUT
+      - name: Configure git
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Create a new branch and commit changes
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          BRANCH_NAME="update-$(date +%Y-%m-%d-%H-%M-%S)"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          git checkout -b $BRANCH_NAME
+          git add index.md pages/
+          git commit -m "Update scraped content"
+      - name: Push changes
+        if: steps.git-check.outputs.changed == 'true'
+        run: git push origin ${{ env.BRANCH_NAME }}
+      - name: Create Pull Request
+        if: steps.git-check.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr create --base main --head ${{ env.BRANCH_NAME }} --title "Update scraped content" --body "Automated PR with updated content."
