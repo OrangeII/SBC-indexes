@@ -1,0 +1,15 @@
+{
+  "indexes": [
+    {
+      "title": "norme comuni",
+      "base_url": "https://norme.iccu.sbn.it/index.php?title=Norme_comuni"
+    }
+  ],
+  "scraper_config": {
+    "base_url": "https://norme.iccu.sbn.it",
+    "max_links": 10,
+    "delay": 1000,
+    "max_depth": 20,
+    "timeout": 10000
+  }
+}

@@ -1,0 +1,5 @@
+- [Norme comuni](https://norme.iccu.sbn.it/index.php?title=Norme_comuni)
+  - [Prefazione](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/index.php?title=Norme_comuni/Prefazione)
+  - [La catalogazione partecipata: principi e regole per la cooperazione](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/index.php?title=Norme_comuni/La_catalogazione_partecipata)
+  - [1 I livelli di adesione](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/index.php?title=Norme_comuni/La_catalogazione_partecipata/I_livelli_di_adesione)
+  - [2 La parametrizzazione sui dati](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/index.php?title=Norme_comuni/La_catalogazione_partecipata/La_parametrizzazione_sui_dati)
