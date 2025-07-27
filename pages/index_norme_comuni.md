@@ -3,8 +3,3 @@
   - [La catalogazione partecipata: principi e regole per la cooperazione](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/La_catalogazione_partecipata)
     - [1 I livelli di adesione](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/La_catalogazione_partecipata/I_livelli_di_adesione)
     - [2 La parametrizzazione sui dati](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/La_catalogazione_partecipata/La_parametrizzazione_sui_dati)
-    - [3 Parametrizzazione del Polo e prassi catalografica](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/La_catalogazione_partecipata/Parametrizzazione_del_Polo)
-    - [4 Catalogazione semantica](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/La_catalogazione_partecipata/Catalogazione_semantica)
-    - [5 Localizzazione in Indice](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/La_catalogazione_partecipata/Localizzazione_in_Indice)
-    - [6 Dati dell’esemplare](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/La_catalogazione_partecipata/Dati_dell%27esemplare)
-  - [Codici](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Codici)
