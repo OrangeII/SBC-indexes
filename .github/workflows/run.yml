@@ -5,7 +5,7 @@ name: run
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 1" # Runs at 00:00 on Monday, UTC
+    - cron: "0 6 * * 1" # Runs at 06:00 on Monday, UTC
 
 jobs:
   run:
@@ -27,6 +27,8 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm start
+      - name: Checkout to gh-pages branch
+        run: git checkout gh-pages
       - name: Check for file changes
         id: git-check
         run: |
