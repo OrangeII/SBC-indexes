@@ -29,8 +29,13 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm start
-      - name: Checkout to gh-pages branch
-        run: git checkout gh-pages
+      - name: Switch to gh-pages branch
+        id: switch-branch
+        run: |
+          git stash push --include-untracked
+          git switch gh-pages
+          rm -rf index.md pages/
+          git stash pop
       - name: Check for file changes
         id: git-check
         run: |
