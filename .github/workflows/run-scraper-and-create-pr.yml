@@ -1,6 +1,8 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them and npm run the program.
+# This workflow creates pull requests to update the content of the gh-pages branch
+# It will scrape the SBN website and generate the index.md and pages/ files.
+# Then it will switch to the gh-pages branch, check for changes and create a pull request if there are any.
 
-name: run
+name: update-scraped-content
 
 on:
   workflow_dispatch:
@@ -8,7 +10,7 @@ on:
     - cron: "0 6 * * 1" # Runs at 06:00 on Monday, UTC
 
 jobs:
-  run:
+  run-scraper-and-create-pr:
     permissions:
       contents: write
       pull-requests: write
