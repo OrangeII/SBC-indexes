@@ -228,4 +228,3 @@
     - [7 FAQ e Appendici](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Linee_guida_sull%27indicizzazione/FAQ_e_Appendici)
       - [FAQ](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Linee_guida_sull%27indicizzazione/FAQ_e_Appendici/FAQ)
       - [Appendici](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Linee_guida_sull%27indicizzazione/FAQ_e_Appendici/Appendici)
-        - [Progetti ICCU avviati e da sviluppare](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Linee_guida_sull%27indicizzazione/FAQ_e_Appendici/Appendici/Progetti_ICCU_avviati_e_da_sviluppare)
