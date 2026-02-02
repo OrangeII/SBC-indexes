@@ -182,6 +182,7 @@
     - [Trattamento in SBN di risorse pubblicate online](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Ulteriori_indicazioni_e_approfondimenti/Trattamento_in_SBN_di_risorse_pubblicate_online)
     - [Trattamento in SBN di risorse bifronte](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Ulteriori_indicazioni_e_approfondimenti/Trattamento_in_SBN_di_risorse_bifronte)
     - [Saghe e cicli narrativi](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Ulteriori_indicazioni_e_approfondimenti/Saghe_e_cicli_narrativi)
+    - [Trattamento in SBN di risorse con titolo parallelo](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Ulteriori_indicazioni_e_approfondimenti/Trattamento_in_SBN_di_risorse_con_titolo_parallelo)
   - [Linee guida sull’indicizzazione per soggetto e la classificazione nel Servizio bibliotecario nazionale (SBN)](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Linee_guida_sull%27indicizzazione)
     - [1 Introduzione](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Linee_guida_sull%27indicizzazione/Introduzione)
       - [1.1 Finalità e contenuti delle Linee guida](https://norme.iccu.sbn.it/index.php?title=Norme_comuni/Linee_guida_sull%27indicizzazione/Introduzione/Finalit%C3%A0_e_contenuti_delle_Linee_guida)
