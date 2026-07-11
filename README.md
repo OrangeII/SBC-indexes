@@ -7,7 +7,7 @@ Node.js scraper for the SBN (Servizio Bibliotecario Nazionale) website to build 
 1. Navigate to the project directory
 2. Install dependencies:
    ```bash
-   npm install
+   bun install
    ```
 
 ## Usage
@@ -15,5 +15,5 @@ Node.js scraper for the SBN (Servizio Bibliotecario Nazionale) website to build 
 Run the scraper:
 
 ```bash
-npm start
+bun run
 ```
