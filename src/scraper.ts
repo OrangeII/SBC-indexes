@@ -1,9 +1,45 @@
 import * as cheerio from "cheerio";
+import type { Element } from "domhandler";
 import { existsSync, mkdirSync } from "node:fs";
 import path from "path";
 
+export interface ScraperOptions {
+  maxDepth: number;
+  maxLinks: number;
+  delay: number;
+  timeout: number;
+  userAgent: string;
+}
+
+interface ScraperState {
+  visitedUrls: Set<string>;
+  linkCount: number;
+  indexContent: string;
+}
+
+interface Link {
+  title: string;
+  url: string;
+}
+
+interface IndexNode {
+  title: string;
+  url: string;
+  subPages: IndexNode[];
+}
+
 export class SBNScraper {
-  constructor(indexTitle, baseUrl, options = {}) {
+  indexTitle: string;
+  baseUrl: string;
+  config: ScraperOptions;
+  state: ScraperState;
+  indexFilename: string;
+
+  constructor(
+    indexTitle: string,
+    baseUrl: string,
+    options: Partial<ScraperOptions> = {},
+  ) {
     this.indexTitle = indexTitle;
     this.baseUrl = baseUrl;
     this.config = {
@@ -41,7 +77,7 @@ export class SBNScraper {
     }
   }
 
-  _sleep(ms) {
+  _sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
@@ -56,15 +92,15 @@ export class SBNScraper {
     return false;
   }
 
-  _shouldSkipUrl(url, visited) {
+  _shouldSkipUrl(url: string, visited: Set<string>) {
     return visited.has(url) || this._isMaxVisitsReached();
   }
 
-  _isAnchorLink(url) {
+  _isAnchorLink(url: string) {
     return url.includes("#");
   }
 
-  _isReference($link) {
+  _isReference($link: cheerio.Cheerio<Element>) {
     const text = $link.text();
     const hasReferenceClass =
       $link.hasClass("reference") || $link.parent().hasClass("reference");
@@ -73,11 +109,11 @@ export class SBNScraper {
     return hasReferenceClass || hasReferenceText;
   }
 
-  _isInNavigationSection($link) {
+  _isInNavigationSection($link: cheerio.Cheerio<Element>) {
     return $link.closest("#mw-navigation").length > 0;
   }
 
-  _isValidLink(href, title, $link) {
+  _isValidLink(href: string, title: string, $link: cheerio.Cheerio<Element>) {
     if (!href || !title || this._isReference($link)) {
       return false;
     }
@@ -95,7 +131,7 @@ export class SBNScraper {
     return true;
   }
 
-  _buildFullUrl(href, currentUrl) {
+  _buildFullUrl(href: string, currentUrl: string) {
     if (href.startsWith("#")) {
       href = currentUrl + href;
     }
@@ -103,12 +139,12 @@ export class SBNScraper {
     return href.startsWith("http") ? href : this.baseUrl + href;
   }
 
-  _isValidDomain(url) {
+  _isValidDomain(url: string) {
     return url.includes("norme.iccu.sbn.it");
   }
 
   // Public methods
-  async fetchPage(url) {
+  async fetchPage(url: string) {
     try {
       await this._sleep(this.config.delay);
       console.log(`Fetching: ${url}`);
@@ -125,24 +161,25 @@ export class SBNScraper {
       }
 
       return await response.text();
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Failed to fetch ${url}:`, error.message);
       return null;
     }
   }
 
-  extractLinks(html, currentUrl) {
+  extractLinks(html: string, currentUrl: string) {
     // Skip processing if this is an anchor link
     if (this._isAnchorLink(currentUrl)) {
       return [];
     }
 
     const $ = cheerio.load(html);
-    const links = [];
+    const links: Link[] = [];
 
     $("#mw-content-text ul li a").each((index, element) => {
       const $link = $(element);
       const href = $link.attr("href");
+      if (!href) return;
       const title = $link.text().trim();
 
       if (this._isValidLink(href, title, $link)) {
@@ -160,7 +197,7 @@ export class SBNScraper {
     return links;
   }
 
-  async updateIndexFile(node, indent = 0) {
+  async updateIndexFile(node: Link, indent = 0) {
     if (!node) return;
 
     const indentStr = "  ".repeat(indent);
@@ -170,12 +207,12 @@ export class SBNScraper {
     await Bun.write(this.indexFilename, this.state.indexContent);
   }
 
-  extractPageTitle(html, fallbackTitle) {
+  extractPageTitle(html: string, fallbackTitle: string) {
     const $ = cheerio.load(html);
     return fallbackTitle || $("#firstHeading").text().trim() || "Unknown Title";
   }
 
-  createNode(title, url) {
+  createNode(title: string, url: string): IndexNode {
     return {
       title: title,
       url: url,
@@ -183,7 +220,7 @@ export class SBNScraper {
     };
   }
 
-  async processSubLinks(links, depth, visited) {
+  async processSubLinks(links: Link[], depth: number, visited: Set<string>) {
     const subPages = [];
 
     for (const link of links) {
@@ -212,7 +249,12 @@ export class SBNScraper {
     return subPages;
   }
 
-  async buildIndex(pageTitle, startUrl, depth = 0, visited = new Set()) {
+  async buildIndex(
+    pageTitle: string,
+    startUrl: string,
+    depth = 0,
+    visited = new Set<string>(),
+  ) {
     if (
       depth > this.config.maxDepth ||
       this._shouldSkipUrl(startUrl, visited)

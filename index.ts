@@ -30,7 +30,7 @@ async function main() {
       await scraper.buildIndex("", index.base_url);
       files.push({ title: index.title, filename: scraper.indexFilename });
       console.log(`\nIndex saved to ${scraper.indexFilename}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error during scraping:", error.message);
     }
   }
@@ -38,7 +38,7 @@ async function main() {
   await writeIndexFile(files);
 }
 
-async function writeIndexFile(files) {
+async function writeIndexFile(files: { title: string; filename: string }[]) {
   //remove extension from links
   //this is for github pages
   const indexContent = files
@@ -54,7 +54,7 @@ async function readConfig() {
     const config = await Bun.file(CONFIG_FILE).json();
     console.log("loaded configuration:", config);
     return config;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error reading config file:", error.message);
     return null;
   }
