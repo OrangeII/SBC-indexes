@@ -1,4 +1,6 @@
-import { SBNScraper } from "./scraper.js";
+import { SBNScraper } from "./src/scraper.js";
+
+const CONFIG_FILE = "./config.json";
 
 async function main() {
   const config = await readConfig();
@@ -48,7 +50,10 @@ async function writeIndexFile(files) {
 
 async function readConfig() {
   try {
-    return await Bun.file("./config.json").json();
+    console.log(`Reading configuration from ${CONFIG_FILE}...`);
+    const config = await Bun.file(CONFIG_FILE).json();
+    console.log("loaded configuration:", config);
+    return config;
   } catch (error) {
     console.error("Error reading config file:", error.message);
     return null;
