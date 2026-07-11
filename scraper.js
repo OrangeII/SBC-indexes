@@ -1,6 +1,5 @@
-import axios from "axios";
 import * as cheerio from "cheerio";
-import fs from "fs";
+import { existsSync, mkdirSync } from "node:fs";
 import path from "path";
 
 export class SBNScraper {
@@ -37,8 +36,8 @@ export class SBNScraper {
 
   _ensureIndexDirectory() {
     const dir = path.dirname(this.indexFilename);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+    if (!existsSync(dir)) {
+      mkdirSync(dir, { recursive: true });
     }
   }
 
@@ -50,7 +49,7 @@ export class SBNScraper {
     if (this.config.maxLinks <= 0) return false;
     if (this.state.linkCount >= this.config.maxLinks) {
       console.log(
-        `Reached maximum link limit of ${this.config.maxLinks}. Stopping crawl.`
+        `Reached maximum link limit of ${this.config.maxLinks}. Stopping crawl.`,
       );
       return true;
     }
@@ -114,14 +113,18 @@ export class SBNScraper {
       await this._sleep(this.config.delay);
       console.log(`Fetching: ${url}`);
 
-      const response = await axios.get(url, {
-        timeout: this.config.timeout,
+      const response = await fetch(url, {
+        signal: AbortSignal.timeout(this.config.timeout),
         headers: {
           "User-Agent": this.config.userAgent,
         },
       });
 
-      return response.data;
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      return await response.text();
     } catch (error) {
       console.error(`Failed to fetch ${url}:`, error.message);
       return null;
@@ -157,14 +160,14 @@ export class SBNScraper {
     return links;
   }
 
-  updateIndexFile(node, indent = 0) {
+  async updateIndexFile(node, indent = 0) {
     if (!node) return;
 
     const indentStr = "  ".repeat(indent);
     const line = `${indentStr}- [${node.title}](${node.url})\n`;
 
     this.state.indexContent += line;
-    fs.writeFileSync(this.indexFilename, this.state.indexContent);
+    await Bun.write(this.indexFilename, this.state.indexContent);
   }
 
   extractPageTitle(html, fallbackTitle) {
@@ -193,14 +196,14 @@ export class SBNScraper {
           link.title,
           link.url,
           depth + 1,
-          visited
+          visited,
         );
 
         if (subIndex) {
           subPages.push(subIndex);
         } else {
           const leafNode = this.createNode(link.title, link.url);
-          this.updateIndexFile(leafNode, depth + 1);
+          await this.updateIndexFile(leafNode, depth + 1);
           subPages.push(leafNode);
         }
       }
@@ -228,7 +231,7 @@ export class SBNScraper {
     const finalTitle = this.extractPageTitle(html, pageTitle);
     const currentNode = this.createNode(finalTitle, startUrl);
 
-    this.updateIndexFile(currentNode, depth);
+    await this.updateIndexFile(currentNode, depth);
 
     const links = this.extractLinks(html, startUrl);
     const subPages = await this.processSubLinks(links, depth, visited);

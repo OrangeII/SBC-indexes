@@ -1,9 +1,7 @@
 import { SBNScraper } from "./scraper.js";
-import fs from "fs";
-import path from "path";
 
 async function main() {
-  const config = readConfig();
+  const config = await readConfig();
   if (!config) {
     console.error("Failed to read configuration. Exiting.");
     return;
@@ -21,7 +19,7 @@ async function main() {
         maxLinks: config.scraper_config.max_links,
         delay: config.scraper_config.delay,
         timeout: config.scraper_config.timeout,
-      }
+      },
     );
     console.log("Starting SBN website scraping...");
     console.log("This may take several minutes.\n");
@@ -35,23 +33,22 @@ async function main() {
     }
   }
 
-  writeIndexFile(files);
+  await writeIndexFile(files);
 }
 
-function writeIndexFile(files) {
+async function writeIndexFile(files) {
   //remove extension from links
   //this is for github pages
   const indexContent = files
     .map((file) => `- [${file.title}](${file.filename.replace(/\.md$/, "")})`)
     .join("\n");
-  fs.writeFileSync("index.md", indexContent);
+  await Bun.write("index.md", indexContent);
   console.log("Index file created: index.md");
 }
 
-function readConfig() {
+async function readConfig() {
   try {
-    const config = JSON.parse(fs.readFileSync("./config.json", "utf-8"));
-    return config;
+    return await Bun.file("./config.json").json();
   } catch (error) {
     console.error("Error reading config file:", error.message);
     return null;
